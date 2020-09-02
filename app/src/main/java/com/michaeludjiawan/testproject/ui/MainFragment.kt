@@ -3,7 +3,8 @@ package com.michaeludjiawan.testproject.ui
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.michaeludjiawan.testproject.R
 import com.michaeludjiawan.testproject.ui.home.HomeFragment
@@ -23,7 +24,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun initViewPager() {
-        val adapter = MainViewPagerAdapter(requireActivity())
+        val adapter = MainViewPagerAdapter(childFragmentManager, lifecycle)
         adapter.addFragment(homeFragment)
         adapter.addFragment(profileFragment)
         vp_main.adapter = adapter
@@ -46,7 +47,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
     }
 
-    class MainViewPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
+    class MainViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
+        FragmentStateAdapter(fragmentManager, lifecycle) {
 
         private val fragments = ArrayList<Fragment>()
 

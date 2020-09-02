@@ -10,6 +10,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationController {
 
+    private fun getParentLayoutId(): Int = R.id.fl_main_host
+    private fun getCurrentFragment() = supportFragmentManager.findFragmentById(getParentLayoutId())
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(toolbar_main)
@@ -38,8 +41,5 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationContro
 
         fragmentTransaction.commit()
     }
-
-    private fun getCurrentFragment() = supportFragmentManager.findFragmentById(getParentLayoutId())
-    private fun getParentLayoutId(): Int = R.id.fl_main_host
 
 }

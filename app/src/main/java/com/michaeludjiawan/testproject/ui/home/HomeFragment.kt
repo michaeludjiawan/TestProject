@@ -3,7 +3,6 @@ package com.michaeludjiawan.testproject.ui.home
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.ExperimentalPagingApi
@@ -11,6 +10,8 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.michaeludjiawan.testproject.R
 import com.michaeludjiawan.testproject.data.model.User
+import com.michaeludjiawan.testproject.ui.BaseFragment
+import com.michaeludjiawan.testproject.ui.profile.ProfileDetailFragment
 import com.michaeludjiawan.testproject.util.toVisibility
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,11 +21,14 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HomeFragment : Fragment(R.layout.fragment_home) {
+class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private val viewModel by viewModel<HomeViewModel>()
 
-    private val onUserClick: (User) -> Unit = {}
+    private val onUserClick: (User) -> Unit = { user ->
+        val destination = ProfileDetailFragment.newInstance(user)
+        findNavController().navigateToPage(destination)
+    }
 
     private val userAdapter = UserPagingAdapter(onUserClick)
 
@@ -35,6 +39,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initDefaultToolbar(getString(R.string.home_page_title), false)
         initRecyclerView()
 
         getUsers()
