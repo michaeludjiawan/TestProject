@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_home"
+    app:startDestination="@id/action_home">
+
+    <fragment
+        android:id="@+id/action_home"
+        android:name="com.michaeludjiawan.testproject.ui.home.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_action_home_to_action_profile"
+            app:destination="@id/action_profile" />
+    </fragment>
+    <fragment
+        android:id="@+id/action_profile"
+        android:name="com.michaeludjiawan.testproject.ui.profile.ProfileFragment"
+        android:label="ProfileFragment" />
+</navigation>
