@@ -8,13 +8,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.michaeludjiawan.testproject.R
 import com.michaeludjiawan.testproject.ui.home.HomeFragment
-import com.michaeludjiawan.testproject.ui.profile.ProfileFragment
+import com.michaeludjiawan.testproject.ui.profile.ProfileDetailFragment
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment(R.layout.fragment_main) {
 
     private val homeFragment by lazy { HomeFragment() }
-    private val profileFragment by lazy { ProfileFragment() }
+    private val profileFragment by lazy { ProfileDetailFragment() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

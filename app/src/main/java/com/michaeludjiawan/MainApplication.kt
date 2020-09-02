@@ -1,6 +1,7 @@
 package com.michaeludjiawan
 
 import android.app.Application
+import com.michaeludjiawan.testproject.di.dataModule
 import com.michaeludjiawan.testproject.di.featureModule
 import com.michaeludjiawan.testproject.di.networkModule
 import org.koin.android.ext.koin.androidContext
@@ -13,7 +14,7 @@ class MainApplication : Application() {
 
         startKoin {
             androidContext(this@MainApplication)
-            modules(listOf(networkModule, featureModule))
+            modules(listOf(dataModule, networkModule, featureModule))
         }
     }
 }

@@ -25,6 +25,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
+    }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -38,9 +48,13 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation "androidx.paging:paging-runtime:3.0.0-alpha01"
+    implementation "androidx.paging:paging-runtime:3.0.0-alpha05"
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+
+    implementation "androidx.room:room-runtime:2.3.0-alpha02"
+    implementation "androidx.room:room-ktx:2.3.0-alpha02"
+    kapt "androidx.room:room-compiler:2.3.0-alpha02"
 
     implementation "org.koin:koin-android:2.0.1"
     implementation "org.koin:koin-androidx-viewmodel:2.0.1"

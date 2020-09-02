@@ -3,8 +3,8 @@ package com.michaeludjiawan.testproject.ui.home
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.CombinedLoadStates
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,12 +12,13 @@ import com.michaeludjiawan.testproject.R
 import com.michaeludjiawan.testproject.data.model.User
 import com.michaeludjiawan.testproject.ui.BaseFragment
 import com.michaeludjiawan.testproject.ui.profile.ProfileDetailFragment
-import com.michaeludjiawan.testproject.util.toVisibility
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -34,8 +35,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private var getUsersJob: Job? = null
 
-    @ExperimentalCoroutinesApi
-    @ExperimentalPagingApi
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -45,7 +45,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         getUsers()
     }
 
-    @ExperimentalPagingApi
+    @OptIn(ExperimentalPagingApi::class)
     private fun initRecyclerView() {
         userAdapter.withLoadStateHeaderAndFooter(
             header = UserLoadStateAdapter { userAdapter.retry() },
@@ -55,10 +55,20 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         userAdapter.addLoadStateListener { loadState ->
             if (isDetached) return@addLoadStateListener
 
-            if (loadState.refresh !is LoadState.NotLoading) {
-                handleUiLoading(loadState)
-            } else {
-                handleUiComplete(loadState)
+            rv_home_users.isVisible = loadState.source.refresh is LoadState.NotLoading
+            pb_home_progress_bar.isVisible = loadState.source.refresh is LoadState.Loading
+            btn_home_retry.isVisible = loadState.source.refresh is LoadState.Error
+
+            val errorState = loadState.source.append as? LoadState.Error
+                ?: loadState.source.prepend as? LoadState.Error
+                ?: loadState.append as? LoadState.Error
+                ?: loadState.prepend as? LoadState.Error
+            errorState?.let {
+                Toast.makeText(
+                    context,
+                    "Error: ${it.error.message}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
 
@@ -69,43 +79,15 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            userAdapter.dataRefreshFlow.collect {
-                rv_home_users.scrollToPosition(0)
-            }
+            userAdapter.loadStateFlow
+                .distinctUntilChangedBy { it.refresh }
+                .filter { it.refresh is LoadState.NotLoading }
+                .collect { rv_home_users.scrollToPosition(0) }
         }
 
         btn_home_retry.setOnClickListener { userAdapter.retry() }
     }
 
-    private fun handleUiLoading(loadState: CombinedLoadStates) {
-        rv_home_users.visibility = View.GONE
-        pb_home_progress_bar.visibility = toVisibility(loadState.refresh is LoadState.Loading)
-        btn_home_retry.visibility = toVisibility(loadState.refresh is LoadState.Error)
-    }
-
-    private fun handleUiComplete(loadState: CombinedLoadStates) {
-        rv_home_users.visibility = View.VISIBLE
-        pb_home_progress_bar.visibility = View.GONE
-        btn_home_retry.visibility = View.GONE
-
-        val errorState = when {
-            loadState.append is LoadState.Error -> {
-                loadState.append as LoadState.Error
-            }
-            loadState.prepend is LoadState.Error -> {
-                loadState.prepend as LoadState.Error
-            }
-            else -> {
-                null
-            }
-        }
-
-        errorState?.let {
-            Toast.makeText(requireContext(), "Error: ${it.error.message}", Toast.LENGTH_LONG).show()
-        }
-    }
-
-    @ExperimentalCoroutinesApi
     private fun getUsers() {
         getUsersJob?.cancel()
         getUsersJob = viewLifecycleOwner.lifecycleScope.launch {
