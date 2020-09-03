@@ -8,7 +8,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="First Name">
+        android:hint="@string/field_first_name_label">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_profile_edit_first_name"
@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Last Name">
+        android:hint="@string/field_last_name_label">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_profile_edit_last_name"
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Email">
+        android:hint="@string/field_email_label">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_profile_edit_email"
@@ -52,6 +52,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:text="Save" />
+        android:text="@string/btn_save_label" />
 
 </LinearLayout>

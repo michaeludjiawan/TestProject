@@ -5,4 +5,9 @@
     <string name="user_detail_page_title">Detail</string>
     <string name="default_empty_field">-</string>
     <string name="profile_action_edit_label">Edit</string>
+    <string name="field_first_name_label">First Name</string>
+    <string name="field_last_name_label">Last Name</string>
+    <string name="field_email_label">Email</string>
+    <string name="btn_save_label">Save</string>
+    <string name="btn_retry_label">Retry</string>
 </resources>

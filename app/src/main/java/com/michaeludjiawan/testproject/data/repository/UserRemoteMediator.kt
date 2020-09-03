@@ -29,12 +29,8 @@ class UserRemoteMediator(
             LoadType.PREPEND -> {
                 val remoteKeys = getRemoteKeyForFirstItem(state)
                 if (remoteKeys == null) {
-                    // The LoadType is PREPEND so some data was loaded before,
-                    // so we should have been able to get remote keys
-                    // If the remoteKeys are null, then we're an invalid state and we have a bug
                     STARTING_PAGE_INDEX
                 } else {
-                    // If the previous key is null, then we can't request more data
                     remoteKeys.prevKey ?: return MediatorResult.Success(endOfPaginationReached = true)
                     remoteKeys.prevKey
                 }
@@ -77,21 +73,15 @@ class UserRemoteMediator(
 
 
     private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, User>): RemoteKeys? {
-        // Get the last page that was retrieved, that contained items.
-        // From that last page, get the last item
         return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()
             ?.let { user ->
-                // Get the remote keys of the last item retrieved
                 appDb.remoteKeysDao().getRemoteKeysUserById(user.id)
             }
     }
 
     private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, User>): RemoteKeys? {
-        // Get the first page that was retrieved, that contained items.
-        // From that first page, get the first item
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()
             ?.let { user ->
-                // Get the remote keys of the first items retrieved
                 appDb.remoteKeysDao().getRemoteKeysUserById(user.id)
             }
     }
@@ -99,8 +89,6 @@ class UserRemoteMediator(
     private suspend fun getRemoteKeyClosestToCurrentPosition(
         state: PagingState<Int, User>
     ): RemoteKeys? {
-        // The paging library is trying to load data after the anchor position
-        // Get the item closest to the anchor position
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.id?.let { userId ->
                 appDb.remoteKeysDao().getRemoteKeysUserById(userId)
