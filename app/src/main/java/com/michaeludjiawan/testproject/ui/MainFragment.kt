@@ -2,6 +2,7 @@ package com.michaeludjiawan.testproject.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
@@ -37,9 +38,11 @@ class MainFragment : BaseFragment(R.layout.fragment_main) {
             when (menuItem.itemId) {
                 R.id.action_home -> {
                     vp_main.currentItem = 0
+                    (activity as? AppCompatActivity)?.supportActionBar?.title = getString(R.string.home_page_title)
                 }
                 R.id.action_profile -> {
                     vp_main.currentItem = 1
+                    (activity as? AppCompatActivity)?.supportActionBar?.title = getString(R.string.profile_page_title)
                 }
             }
 
