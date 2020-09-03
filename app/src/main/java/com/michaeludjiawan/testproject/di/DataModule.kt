@@ -10,6 +10,7 @@ val dataModule = module {
 
     single { (get() as AppDb).userDao() }
     single { (get() as AppDb).remoteKeysDao() }
+    single { (get() as AppDb).accountDao() }
 }
 
 fun createDatabase(context: Context): AppDb {

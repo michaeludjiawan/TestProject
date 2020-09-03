@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.michaeludjiawan.testproject.R
 import com.michaeludjiawan.testproject.data.model.User
 import com.michaeludjiawan.testproject.ui.BaseFragment
-import com.michaeludjiawan.testproject.ui.profile.ProfileDetailFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -27,7 +26,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private val viewModel by viewModel<HomeViewModel>()
 
     private val onUserClick: (User) -> Unit = { user ->
-        val destination = ProfileDetailFragment.newInstance(user)
+        val destination = UserDetailFragment.newInstance(user)
         findNavController().navigateToPage(destination)
     }
 

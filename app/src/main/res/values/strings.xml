@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">TestProject</string>
     <string name="home_page_title">Home</string>
-    <string name="profile_detail_page_title">Detail</string>
+    <string name="profile_page_title">Profile</string>
+    <string name="user_detail_page_title">Detail</string>
+    <string name="default_empty_field">-</string>
+    <string name="profile_action_edit_label">Edit</string>
 </resources>
